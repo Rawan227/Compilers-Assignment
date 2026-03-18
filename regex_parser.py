@@ -7,8 +7,18 @@ def tokenize_regex(regex:str)->List[Token]:
     while i<len(regex):
         c=regex[i]
 
+        #bracket
+        if c == '[':
+            j = i + 1
+            while j < len(regex) and regex[j] != ']':
+                j += 1
+            bracket_token = regex[i:j+1]
+            tokens.append([bracket_token, 'variable'])
+            i = j + 1
+            continue
+
         #range [a-z]
-        if c == '-' and len(tokens)!=0:
+        elif c == '-' and len(tokens)!=0:
             start = regex[i - 1]
             end = regex[i + 1]
             tokens[-1] = (f"{start}-{end}", 'variable')
